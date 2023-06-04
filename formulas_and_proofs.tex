@@ -1,0 +1,73 @@
+\documentclass{article}
+
+\title{Formulas and Proofs: A Visual Exploration of Mathematical Equations}
+\author{Andrea Ortenzi}
+\date{04/06/2023}
+
+
+%% -----------------------------------------------------------------------
+\usepackage{lipsum} % For dummy text
+\usepackage{amsmath} % for align*
+\usepackage{hyperref} % for links
+
+% Define a counter for formulas
+\newcounter{formulaCounter}
+\setcounter{formulaCounter}{1}
+% Define a command for printing the first formula and appending the second formula to the list
+\newcommand{\formula}[2]{%
+  % Print the first formula
+  
+  \begin{equation}
+  \hyperref[proofs]{#1}
+  %\tag{\arabic{formulaCounter}}
+  \label{proof-\arabic{formulaCounter}}
+  \end{equation}
+  % Store the second formula with a unique name using the formula counter
+  \global\expandafter\def\csname proof-\arabic{formulaCounter}\endcsname{#2}
+  % Increase the formula counter
+  \stepcounter{formulaCounter}
+}
+%% -----------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{First paragraph}
+
+% Example usage of the command
+\formula{a + b = c}{a = c - b \rightarrow a + b = c - b + b = c}
+
+\lipsum[1-2] % Dummy text
+
+\begin{equation}
+    a+5-6=78
+\end{equation}
+\lipsum[1-2] % Dummy text
+
+% Example usage of the command again
+\formula{a = l + c}{a &= l + c \\ a - l &= c}
+
+\lipsum[1-2] % Dummy text
+
+
+%% -----------------------------------------------------------------------
+% Proof section
+\section{Proofs}\label{proofs}
+\begin{itemize}
+  % Loop through the formulas and print their corresponding proofs
+  \newcounter{proofCounter}
+  \setcounter{proofCounter}{1}
+  \loop
+    \ifnum \value{proofCounter}<\value{formulaCounter}
+      \item Proof of formula number \ref{proof-\arabic{proofCounter}}:
+      \begin{align*}
+          \csname proof-\arabic{proofCounter}\endcsname
+      \end{align*}
+      \stepcounter{proofCounter}
+  \repeat
+\end{itemize}
+%% -----------------------------------------------------------------------
+
+\end{document}
